@@ -21,7 +21,7 @@ module Node
     parameters:
         int address;
         string appType;
-        @display("i=misc/node_vs,gold");
+        @display("i=old/srouter,gold");
     gates:
         inout port[];
     submodules:

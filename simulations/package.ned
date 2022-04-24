@@ -1,4 +1,4 @@
-package gestionfilesattentes;
+package simulations;
 
 import inet.networklayer.configurator.ipv4.Ipv4FlatNetworkConfigurator;
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;

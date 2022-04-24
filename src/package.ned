@@ -1,3 +1,3 @@
-package ter_gestion_files_d_attente;
+package src;
 
 @license(LGPL);

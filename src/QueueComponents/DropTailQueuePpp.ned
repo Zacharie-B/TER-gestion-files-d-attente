@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package ter_gestion_files_d_attente.QueueComponents;
+package src.QueueComponents;
 
 import inet.queueing.contract.IPacketQueue;
 

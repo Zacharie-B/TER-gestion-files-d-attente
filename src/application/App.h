@@ -13,41 +13,39 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef ROUTER_FIFOQUEUE_H_
-#define ROUTER_FIFOQUEUE_H_
+#ifndef APPLICATION_APP_H_
+#define APPLICATION_APP_H_
 
-#include <stdio.h>
-#include <string.h>
+#include <vector>
 #include <omnetpp.h>
+#include "Packet_m.h"
 
 using namespace omnetpp;
 
+class App : public cSimpleModule
+{
+	private:
+    // configuration
+    int myAddress;
+    std::vector<int> destAddresses;
+    cPar *sendIATime;
+    cPar *packetLengthBytes;
 
-class FifoQueue : public cSimpleModule {
+    // state
+    cMessage *generatePacket = nullptr;
+    long pkCounter;
 
-private:
-    intval_t frameCapacity;
+    // signals
+    simsignal_t endToEndDelaySignal;
+    simsignal_t hopCountSignal;
+    simsignal_t sourceAddressSignal;
 
-    cQueue queue;
-    cMessage *endTransmissionEvent = nullptr;
-    bool isBusy;
+  public:
+    virtual ~App();
 
-    simsignal_t qlenSignal;
-    simsignal_t busySignal;
-    simsignal_t queueingTimeSignal;
-    simsignal_t dropSignal;
-    simsignal_t txBytesSignal;
-    simsignal_t rxBytesSignal;
-
-public:
-    FifoQueue();
-    virtual ~FifoQueue();
-
-protected:
+  protected:
     virtual void initialize() override;
-    virtual void startTransmitting(cMessage *msg);
     virtual void handleMessage(cMessage *msg) override;
-    virtual void refreshDisplay() const override;
 };
 
-#endif /* ROUTER_FIFOQUEUE_H_ */
+#endif /* APPLICATION_APP_H_ */

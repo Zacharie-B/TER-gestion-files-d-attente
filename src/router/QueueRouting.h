@@ -13,41 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef ROUTER_FIFOQUEUE_H_
-#define ROUTER_FIFOQUEUE_H_
+#ifndef ROUTER_QUEUEROUTING_H_
+#define ROUTER_QUEUEROUTING_H_
 
-#include <stdio.h>
-#include <string.h>
+#include <map>
 #include <omnetpp.h>
+#include "Packet_m.h"
 
 using namespace omnetpp;
 
+class QueueRouting : public cSimpleModule {
+  private:
+    int myAddress;
 
-class FifoQueue : public cSimpleModule {
+    typedef std::map<int, int> RoutingTable;  // destaddr -> gateindex
+    RoutingTable rtable;
 
-private:
-    intval_t frameCapacity;
-
-    cQueue queue;
-    cMessage *endTransmissionEvent = nullptr;
-    bool isBusy;
-
-    simsignal_t qlenSignal;
-    simsignal_t busySignal;
-    simsignal_t queueingTimeSignal;
     simsignal_t dropSignal;
-    simsignal_t txBytesSignal;
-    simsignal_t rxBytesSignal;
+    simsignal_t outputIfSignal;
 
-public:
-    FifoQueue();
-    virtual ~FifoQueue();
-
-protected:
+  protected:
     virtual void initialize() override;
-    virtual void startTransmitting(cMessage *msg);
     virtual void handleMessage(cMessage *msg) override;
-    virtual void refreshDisplay() const override;
 };
 
-#endif /* ROUTER_FIFOQUEUE_H_ */
+#endif /* ROUTER_QUEUEROUTING_H_ */

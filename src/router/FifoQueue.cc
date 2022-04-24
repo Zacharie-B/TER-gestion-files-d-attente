@@ -27,12 +27,16 @@ FifoQueue::~FifoQueue() {
     cancelAndDelete(endTransmissionEvent);
 }
 
-void FifoQueue::initialize(){
+/**
+ * Initialize all references parameters of our fifoQueue, to use them after.
+ */
+void FifoQueue::initialize()
+{
     queue.setName("fifoQueue");
     endTransmissionEvent = new cMessage("endTransmissionEvent");
 
    if (par("useCutThroughSwitching"))
-       gate("line$i")->setDeliverImmediately(true);
+       gate("link$i")->setDeliverImmediately(true);
 
    frameCapacity = par("frameCapacity");
 
@@ -48,4 +52,84 @@ void FifoQueue::initialize(){
    isBusy = false;
 }
 
+/**
+ * Begin of the message transmission through the link gate.
+ *
+ * @param *msg The message to transmit through the fifo.
+ */
+void FifoQueue::startTransmitting(cMessage *msg)
+{
+    EV << "Starting transmission of " << msg << endl;
+    isBusy = true;
+    int64_t numBytes = check_and_cast<cPacket *>(msg)->getByteLength();
+    send(msg, "link$o");
+
+    emit(txBytesSignal, numBytes);
+
+
+    // Schedule an event for the time when last bit will leave the gate.
+    simtime_t endTransmission = gate("link$o")->getTransmissionChannel()->getTransmissionFinishTime();
+    scheduleAt(endTransmission, endTransmissionEvent);
+}
+
+/**
+ * Manage the good transmission of the message given in parameter, it manages from
+ * the beginning to the end of the transmission.
+ *
+ * @param *msg to transmit or check if it's already transmit
+ */
+void FifoQueue::handleMessage(cMessage *msg)
+{
+    if (msg == endTransmissionEvent) {
+        // Transmission finished, we can start next one.
+        EV << "Transmission finished.\n";
+        isBusy = false;
+        if (queue.isEmpty()) {
+            emit(busySignal, false);
+        }
+        else {
+            msg = (cMessage *)queue.pop();
+            emit(queueingTimeSignal, simTime() - msg->getTimestamp());
+            emit(qlenSignal, queue.getLength());
+            startTransmitting(msg);
+        }
+    }
+    else if (msg->arrivedOn("line$i")) {
+        // pass up
+        emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
+        send(msg, "out");
+    }
+    else {  // arrived on gate "in"
+        if (endTransmissionEvent->isScheduled()) {
+            // We are currently busy, so just queue up the packet.
+            if (frameCapacity && queue.getLength() >= frameCapacity) {
+                EV << "Received " << msg << " but transmitter busy and queue full: discarding\n";
+                emit(dropSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
+                delete msg;
+            }
+            else {
+                EV << "Received " << msg << " but transmitter busy: queueing up\n";
+                msg->setTimestamp();
+                queue.insert(msg);
+                emit(qlenSignal, queue.getLength());
+            }
+        }
+        else {
+            // We are idle, so we can start transmitting right away.
+            EV << "Received " << msg << endl;
+            emit(queueingTimeSignal, SIMTIME_ZERO);
+            startTransmitting(msg);
+            emit(busySignal, true);
+        }
+    }
+}
+
+/**
+ * Refresh display one the graphical simulation
+ */
+void FifoQueue::refreshDisplay() const
+{
+    getDisplayString().setTagArg("t", 0, isBusy ? "transmitting" : "inactive");
+    getDisplayString().setTagArg("i", 1, isBusy ? (queue.getLength() >= 5 ? "red" : "yellow") : "");
+}
 

@@ -8,15 +8,18 @@
 //
 
 
-package src.application;
+package src.device;
 
-import src.router.QueueRouting;
-import src.router.FifoQueue;
+import src.queue.QueueRouting;
+import src.queue.FifoQueue;
+import src.application.IApp;
+import src.application.App;
+
 //
 // A "Node" consists of a Routing plus an App module which represents the
 // aggregate traffic of the subnets connected to that router.
 //
-module Node
+module Router
 {
     parameters:
         int address;

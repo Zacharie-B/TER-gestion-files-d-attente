@@ -13,12 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef ROUTER_QUEUEROUTING_H_
-#define ROUTER_QUEUEROUTING_H_
+#ifndef QUEUE_QUEUEROUTING_H_
+#define QUEUE_QUEUEROUTING_H_
 
 #include <map>
 #include <omnetpp.h>
-#include "Packet_m.h"
+
+#include "../queue/Packet_m.h"
 
 using namespace omnetpp;
 
@@ -37,4 +38,4 @@ class QueueRouting : public cSimpleModule {
     virtual void handleMessage(cMessage *msg) override;
 };
 
-#endif /* ROUTER_QUEUEROUTING_H_ */
+#endif /* QUEUE_QUEUEROUTING_H_ */

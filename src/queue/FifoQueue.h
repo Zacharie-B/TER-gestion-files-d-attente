@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef ROUTER_FIFOQUEUE_H_
-#define ROUTER_FIFOQUEUE_H_
+#ifndef QUEUE_FIFOQUEUE_H_
+#define QUEUE_FIFOQUEUE_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -50,4 +50,4 @@ protected:
     virtual void refreshDisplay() const override;
 };
 
-#endif /* ROUTER_FIFOQUEUE_H_ */
+#endif /* QUEUE_FIFOQUEUE_H_ */

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "../queue/FifoQueue.h"
+#include "FifoQueue.h"
 
 Define_Module(FifoQueue);
 

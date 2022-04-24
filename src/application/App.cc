@@ -49,7 +49,7 @@ void App::initialize()
     sourceAddressSignal = registerSignal("sourceAddress");
 }
 
-void App::handleMessage(cMessage *msg)
+void App::handleMessage(omnetpp::cMessage *msg)
 {
     if (msg == generatePacket) {
         // Sending packet

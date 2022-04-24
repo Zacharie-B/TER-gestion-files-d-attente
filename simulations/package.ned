@@ -19,7 +19,7 @@ network Network5
         channel C extends DatarateChannel
         {
             delay = uniform(0.001ms, 1s);
-            datarate = uniform(1mbps, 1000mbps);
+            datarate = uniform(1000kbps, 1000000kbps);
         }
     submodules:
         routers[5]: Router {

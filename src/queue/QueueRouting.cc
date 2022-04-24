@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "../queue/QueueRouting.h"
+#include "QueueRouting.h"
 
-Define_Module(Routing);
+Define_Module(QueueRouting);
 
 void QueueRouting::initialize()
 {

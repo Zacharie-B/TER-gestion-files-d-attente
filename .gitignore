@@ -6,5 +6,6 @@
 .project
 out
 simulations/results
+simulations/*.anf
 src/TER-gestion-files-d-attente
 simulations/.qtenvrc

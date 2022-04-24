@@ -28,7 +28,7 @@
 #include <sstream>
 #include <memory>
 #include <type_traits>
-#include "../queue/Packet_m.h"
+#include "Packet_m.h"
 
 namespace omnetpp {
 

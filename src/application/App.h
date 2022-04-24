@@ -18,8 +18,7 @@
 
 #include <vector>
 #include <omnetpp.h>
-
-#include "../queue/Packet_m.h"
+#include "Packet_m.h"
 
 using namespace omnetpp;
 

@@ -19,7 +19,7 @@
 #include <map>
 #include <omnetpp.h>
 
-#include "../queue/Packet_m.h"
+#include "src/application/Packet_m.h"
 
 using namespace omnetpp;
 

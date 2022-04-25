@@ -18,7 +18,6 @@ import src.device.Switch;
 //
 network Network5
 {
-    @display("bgb=201,75");
     types:
         channel C extends DatarateChannel
         {
@@ -28,11 +27,9 @@ network Network5
     submodules:
         routers[5]: Router {
             address = index;
-            @display("p=146,31");
         }
         switchs[5]: Switch {
             address = index;
-            @display("p=48,31");
         }
 
     connections:

@@ -10,21 +10,31 @@ package simulations;
 
 import src.device.Router;
 import ned.DatarateChannel;
+import src.device.Switch;
+
+
 //
 // A ten-node network topology
 //
 network Network5
 {
+    @display("bgb=201,75");
     types:
         channel C extends DatarateChannel
         {
-            delay = uniform(0.001ms, 1s);
-            datarate = uniform(1000kbps, 1000000kbps);
+            delay = uniform(0.001ms, 1ms);
+            datarate = 1000000kbps;
         }
     submodules:
         routers[5]: Router {
             address = index;
+            @display("p=146,31");
         }
+        switchs[5]: Switch {
+            address = index;
+            @display("p=48,31");
+        }
+
     connections:
         routers[1].port++ <--> C <--> routers[0].port++;
         routers[0].port++ <--> C <--> routers[2].port++;
@@ -33,4 +43,11 @@ network Network5
         routers[3].port++ <--> C <--> routers[2].port++;
         routers[2].port++ <--> C <--> routers[4].port++;
         routers[1].port++ <--> C <--> routers[2].port++;
+
+        switchs[0].ports++ <--> C <--> routers[0].port++;
+        switchs[1].ports++ <--> C <--> routers[1].port++;
+        switchs[2].ports++ <--> C <--> routers[2].port++;
+        switchs[3].ports++ <--> C <--> routers[3].port++;
+        switchs[4].ports++ <--> C <--> routers[2].port++;
+
 }

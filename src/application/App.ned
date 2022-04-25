@@ -15,7 +15,7 @@ package src.application;
 simple App like IApp
 {
     parameters:
-        int address;  // local node address
+        int address;  // local router address
         string destAddresses;  // destination addresses
         volatile double sendIaTime @unit(s) = default(exponential(1s)); // time between generating packets
         volatile int packetLength @unit(byte);  // length of one message (fixed! no "volatile" modifier)

@@ -33,7 +33,7 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
-OBJS = $O/application/App.o $O/queue/FifoQueue.o $O/queue/QueueRouting.o $O/application/Packet_m.o
+OBJS = $O/application/App.o $O/behaviorDevice/Switching.o $O/queue/FifoQueue.o $O/queue/QueueRouting.o $O/application/Packet_m.o
 
 # Message files
 MSGFILES = \

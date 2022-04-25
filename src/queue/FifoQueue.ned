@@ -22,7 +22,7 @@ simple FifoQueue
 {
     parameters:
         int frameLength = default(1500); // max length of a frame
-        int frameCapacity = default(-1); // max number of packets; -1 means no limit
+        int frameCapacity = default(3); // max number of packets; 0 means no limit
         bool useCutThroughSwitching = default(false);  // use cut-through switching instead of store-and-forward
         @display("i=block/queue;q=queue");
         @signal[qlen](type="long");

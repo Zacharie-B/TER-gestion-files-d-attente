@@ -31,13 +31,19 @@ class Switching : public cSimpleModule
 		typedef std::map<int, int> SwitchingTable;  // destaddr -> gateindex
 		SwitchingTable switchingTable;
 
+		cMessage *endTransmissionEvent = nullptr;
+		bool isBusy;
+
 		simsignal_t sourceAddress;
 		simsignal_t dropSignal;
 		simsignal_t outputIfSignal;
 
+	public:
+		virtual ~Switching();
 	protected:
 		virtual void initialize() override;
 		virtual void handleMessage(cMessage *msg) override;
+		virtual void startTransmitting(cMessage *msg);
 };
 
 #endif /* DEVICE_SWITCH_H_ */

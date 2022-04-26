@@ -18,6 +18,7 @@ package src.device;
 import src.application.App;
 import src.application.IApp;
 import src.behaviorDevice.Switching;
+
 //
 // TODO documentation
 //
@@ -41,7 +42,7 @@ module Switch
             parameters:
                 @display("p=140,130");
             gates:
-                interfaces[sizeof(parent.ports)];
+                interfaces[parent.numberPorts];
         }
     connections:
         switching.localOut --> app.in;

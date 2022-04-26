@@ -18,18 +18,20 @@ import src.device.Switch;
 //
 network Network5
 {
+    parameters:
+        @display("bgb=800,500");
     types:
         channel C extends DatarateChannel
         {
-            delay = uniform(0.001ms, 1ms);
-            datarate = 1000000kbps;
+            delay = uniform(0.001s, 1s);
+            datarate = 1Gbps;
         }
     submodules:
         routers[5]: Router {
             address = index;
         }
         switchs[5]: Switch {
-            address = index;
+            address = index + 5;
         }
 
     connections:

@@ -94,7 +94,7 @@ void FifoQueue::handleMessage(cMessage *msg)
             startTransmitting(msg);
         }
     }
-    else if (msg->arrivedOn("line$i")) {
+    else if (msg->arrivedOn("link$i")) {
         // pass up
         emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
         send(msg, "out");

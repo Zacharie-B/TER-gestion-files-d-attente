@@ -13,12 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package src.queue;
+package src.behaviorDevice;
 
 //
 // Models a router.
 //
-simple QueueRouting
+simple Routing
 {
     parameters:
         @display("i=block/switch");

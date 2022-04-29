@@ -18,6 +18,7 @@ package src.device;
 import src.application.App;
 import src.application.IApp;
 import src.behaviorDevice.Switching;
+import src.queue.FifoQueue;
 
 //
 // TODO documentation
@@ -40,13 +41,20 @@ module Switch
             parameters:
                 @display("p=140,130");
             gates:
-                interfaces[sizeof(parent.ports)];
+                in[sizeof(parent.ports)];
+                out[sizeof(parent.ports)];
+        }
+        queue[sizeof(ports)]: FifoQueue {
+            parameters:
+                @display("p=80,200,row");
         }
     connections:
         switching.localOut --> app.in;
         switching.localIn <-- app.out;
         for i=0..sizeof(ports)-1{
-            ports[i] <--> switching.interfaces[i];
+            switching.out[i] --> queue[i].in;
+            switching.in[i] <-- queue[i].out;
+            queue[i].link <--> ports[i];
         }
 }
 

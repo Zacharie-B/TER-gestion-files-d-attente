@@ -71,66 +71,29 @@ void Switching::initialize()
 
 void Switching::handleMessage(cMessage *msg)
 {
-	if (msg == endTransmissionEvent) {
-		// Transmission finished, we can start next one.
-		EV << "Transmission finished.\n";
-		isBusy = false;
-		startTransmitting(msg);
+	Packet *pk = check_and_cast<Packet *>(msg);
+	int destAddr = pk->getDestAddr();
+
+	if (destAddr == myAddress) {
+			EV << "local delivery of packet " << pk->getName() << endl;
+			send(pk, "localOut");
+			emit(outputIfSignal, -1);  // -1: local
+			return;
 	}
-	// if a message arrived from out Switch, we send it to the App
-	else if(msg->arrivedOn("interfaces$i", 0)){
-		send(msg, "localOut");
+
+	SwitchingTable::iterator it = switchingTable.find(destAddr);
+	if (it == switchingTable.end()) {
+			EV << "address " << destAddr << " unreachable, discarding packet " << pk->getName() << endl;
+			emit(dropSignal, (intval_t)pk->getByteLength());
+			delete pk;
+			return;
 	}
-	else{
-		if (endTransmissionEvent->isScheduled()) {
-			msg->setTimestamp();
-		}
-		else{
-			startTransmitting(msg);
-		}
-	}
-}
 
-/**
- * Begin of the message transmission through the interfaces gate.
- *
- * @param *msg The message to transmit through the fifo.
- */
-void Switching::startTransmitting(cMessage *msg)
-{
-    EV << "Starting transmission of " << msg << endl;
-    isBusy = true;
+	int outGateIndex = (*it).second;
+	EV << "forwarding packet " << pk->getName() << " on gate index " << outGateIndex << endl;
+	pk->setHopCount(pk->getHopCount()+1);
+	emit(outputIfSignal, outGateIndex);
 
-    if(check_and_cast<cMessage *>(msg))	return;
-
-    Packet *pk = check_and_cast<Packet *>(msg);
-		int destAddr = pk->getDestAddr();
-
-		if (destAddr == myAddress) {
-				EV << "local delivery of packet " << pk->getName() << endl;
-				send(pk, "localOut");
-				emit(outputIfSignal, -1);  // -1: local
-				return;
-		}
-
-		SwitchingTable::iterator it = switchingTable.find(destAddr);
-		if (it == switchingTable.end()) {
-				EV << "address " << destAddr << " unreachable, discarding packet " << pk->getName() << endl;
-				emit(dropSignal, (intval_t)pk->getByteLength());
-				delete pk;
-				return;
-		}
-
-		int outGateIndex = (*it).second;
-		EV << "forwarding packet " << pk->getName() << " on gate index " << outGateIndex << endl;
-		pk->setHopCount(pk->getHopCount()+1);
-		emit(outputIfSignal, outGateIndex);
-		isBusy = true;
-		// gives the exactly gate with '$o' to indicate the port in output mode.
-		send(pk, "interfaces$o", outGateIndex);
-
-    // Schedule an event for the time when last bit will leave the gate.
-    simtime_t endTransmission = gate("interfaces$o", 0)->getTransmissionChannel()->getTransmissionFinishTime();
-    scheduleAt(endTransmission, endTransmissionEvent);
+	send(pk, "out", outGateIndex);
 }
 

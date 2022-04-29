@@ -10,7 +10,7 @@
 
 package src.device;
 
-import src.queue.QueueRouting;
+import src.behaviorDevice.Routing;
 import src.queue.FifoQueue;
 import src.application.IApp;
 import src.application.App;
@@ -33,7 +33,7 @@ module Router
                 address = parent.address;
                 @display("p=140,60");
         }
-        routing: QueueRouting {
+        routing: Routing {
             parameters:
                 @display("p=140,130");
             gates:

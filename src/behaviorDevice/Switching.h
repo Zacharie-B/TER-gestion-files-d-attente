@@ -43,7 +43,6 @@ class Switching : public cSimpleModule
 	protected:
 		virtual void initialize() override;
 		virtual void handleMessage(cMessage *msg) override;
-		virtual void startTransmitting(cMessage *msg);
 };
 
 #endif /* DEVICE_SWITCH_H_ */

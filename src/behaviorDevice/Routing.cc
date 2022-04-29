@@ -13,11 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "QueueRouting.h"
+#include "../behaviorDevice/Routing.h"
 
-Define_Module(QueueRouting);
+Define_Module(Routing);
 
-void QueueRouting::initialize()
+void Routing::initialize()
 {
     myAddress = getParentModule()->par("address");
 
@@ -59,7 +59,7 @@ void QueueRouting::initialize()
     delete topo;
 }
 
-void QueueRouting::handleMessage(cMessage *msg)
+void Routing::handleMessage(cMessage *msg)
 {
     Packet *pk = check_and_cast<Packet *>(msg);
     int destAddr = pk->getDestAddr();

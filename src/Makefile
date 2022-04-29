@@ -36,9 +36,9 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 OBJS = \
     $O/application/App.o \
     $O/behaviorDevice/Hosting.o \
+    $O/behaviorDevice/Routing.o \
     $O/behaviorDevice/Switching.o \
     $O/queue/FifoQueue.o \
-    $O/queue/QueueRouting.o \
     $O/application/Packet_m.o
 
 # Message files

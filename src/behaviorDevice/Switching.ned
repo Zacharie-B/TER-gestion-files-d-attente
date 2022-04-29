@@ -28,5 +28,6 @@ simple Switching
     gates:
         input localIn;
         output localOut;
-        inout interfaces[];
+        input in[];
+        output out[];
 }

@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef QUEUE_QUEUEROUTING_H_
-#define QUEUE_QUEUEROUTING_H_
+#ifndef BEHAVIORDEVICE_ROUTING_H_
+#define BEHAVIORDEVICE_ROUTING_H_
 
 #include <map>
 #include <omnetpp.h>
@@ -23,7 +23,7 @@
 
 using namespace omnetpp;
 
-class QueueRouting : public cSimpleModule {
+class Routing : public cSimpleModule {
   private:
     int myAddress;
 
@@ -38,4 +38,4 @@ class QueueRouting : public cSimpleModule {
     virtual void handleMessage(cMessage *msg) override;
 };
 
-#endif /* QUEUE_QUEUEROUTING_H_ */
+#endif /* ROUTING_H_ */

@@ -93,6 +93,9 @@ void FifoQueue::handleMessage(cMessage *msg)
             emit(queueingTimeSignal, simTime() - msg->getTimestamp());
             emit(qlenSignal, queue.getLength());
             startTransmitting(msg);
+            if(hasGUI())
+            	getParentModule()->bubble("Dequeue and sending packet...");
+
         }
     }
     else if (msg->arrivedOn("link$i")) {
@@ -107,12 +110,16 @@ void FifoQueue::handleMessage(cMessage *msg)
                 EV << "Received " << msg << " but transmitter busy and queue full: discarding\n";
                 emit(dropSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
                 delete msg;
+                if(hasGUI())
+                  getParentModule()->bubble("Queue Full, drop packet...");
             }
             else {
                 EV << "Received " << msg << " but transmitter busy: queueing up\n";
                 msg->setTimestamp();
                 queue.insert(msg);
                 emit(qlenSignal, queue.getLength());
+                if(hasGUI())
+                	getParentModule()->bubble("Queuing packet...");
             }
         }
         else {

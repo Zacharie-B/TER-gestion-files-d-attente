@@ -72,7 +72,7 @@ void App::handleMessage(omnetpp::cMessage *msg)
         pk->setDestAddr(destAddress);
         send(pk, "out");
 
-      	std::cout << "App envoie msg : " << msg << endl;
+//      	std::cout << "App envoie msg : " << msg << endl;
 
         scheduleAt(simTime() + sendIATime->doubleValue(), generatePacket);
         if (hasGUI())

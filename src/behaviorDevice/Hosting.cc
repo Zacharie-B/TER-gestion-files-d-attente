@@ -76,8 +76,10 @@ void Hosting::handleMessage(cMessage *msg)
   	return;
   }
   else if(msg->arrivedOn("localIn")){
-		isBusy = false;
-		startTransmitting(msg);
+  	if (!endTransmissionEvent->isScheduled()) {
+			isBusy = false;
+			startTransmitting(msg);
+  	}
 		return;
   }
 
@@ -97,7 +99,7 @@ void Hosting::handleMessage(cMessage *msg)
 void Hosting::startTransmitting(cMessage *msg)
 {
     EV << "Starting transmission of " << msg << endl;
-    std::cout << "Starting transmission of " << msg << endl;
+//    std::cout << "Starting transmission of " << msg << endl;
     isBusy = true;
 
     Packet *pk = check_and_cast<Packet *>(msg);

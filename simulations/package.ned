@@ -20,7 +20,7 @@ import src.device.Host;
 network Network5
 {
     parameters:
-        @display("bgb=1000,550");
+        @display("bgb=900,520");
     types:
         channel C extends DatarateChannel
         {
@@ -64,5 +64,4 @@ network Network5
         hosts[8].port <--> C <--> switchs[3].ports++;
         hosts[9].port <--> C <--> switchs[4].ports++;
         
-
 }

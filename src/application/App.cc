@@ -38,8 +38,15 @@ void App::initialize()
     while ((token = tokenizer.nextToken()) != nullptr)
         destAddresses.push_back(atoi(token));
 
+    const char *srcAddressesPar = par("srcAddresses");
+    cStringTokenizer tokenizerr(srcAddressesPar);
+    const char *tokenSA;
+    while((tokenSA = tokenizerr.nextToken()) != nullptr)
+    		srcAddresses.push_back(atoi(tokenSA));
+
     if (destAddresses.size() == 0)
         throw cRuntimeError("At least one address must be specified in the destAddresses parameter!");
+
     generatePacket = new cMessage("nextPacket");
     scheduleAt(sendIATime->doubleValue(), generatePacket);
 
@@ -50,7 +57,7 @@ void App::initialize()
 
 void App::handleMessage(omnetpp::cMessage *msg)
 {
-    if (msg == generatePacket) {
+    if (msg == generatePacket && *std::find(srcAddresses.begin(), srcAddresses.end(), myAddress) == myAddress) {
         // Sending packet
         int destAddress = destAddresses[intuniform(0, destAddresses.size()-1)];
 
@@ -68,6 +75,9 @@ void App::handleMessage(omnetpp::cMessage *msg)
         scheduleAt(simTime() + sendIATime->doubleValue(), generatePacket);
         if (hasGUI())
             getParentModule()->bubble("Generating packet...");
+    }
+    else if(msg == generatePacket){
+    	// Dodge the issue which read packet whereas there is nothing to read.
     }
     else {
         // Handle incoming packet

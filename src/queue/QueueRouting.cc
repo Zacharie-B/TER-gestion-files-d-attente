@@ -35,6 +35,7 @@ void QueueRouting::initialize()
     std::vector<std::string> nedTypes;
     nedTypes.push_back(getParentModule()->getNedTypeName());
     nedTypes.push_back("src.device.Switch");
+    nedTypes.push_back("src.device.Host");
     topo->extractByNedTypeName(nedTypes);
     EV << "cTopology found " << topo->getNumNodes() << " nodes\n";
 

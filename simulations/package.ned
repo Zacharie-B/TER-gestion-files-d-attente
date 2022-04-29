@@ -11,6 +11,7 @@ package simulations;
 import src.device.Router;
 import ned.DatarateChannel;
 import src.device.Switch;
+import src.device.Host;
 
 
 //
@@ -19,7 +20,7 @@ import src.device.Switch;
 network Network5
 {
     parameters:
-        @display("bgb=800,500");
+        @display("bgb=1000,550");
     types:
         channel C extends DatarateChannel
         {
@@ -32,6 +33,9 @@ network Network5
         }
         switchs[5]: Switch {
             address = index + 5;
+        }
+        hosts[10]: Host {
+            address = index + 10;
         }
 
     connections:
@@ -48,5 +52,17 @@ network Network5
         switchs[2].ports++ <--> C <--> routers[2].port++;
         switchs[3].ports++ <--> C <--> routers[3].port++;
         switchs[4].ports++ <--> C <--> routers[2].port++;
+        
+        hosts[0].ports++ <--> C <--> switchs[0].ports++;
+        hosts[1].ports++ <--> C <--> switchs[1].ports++;
+        hosts[2].ports++ <--> C <--> switchs[1].ports++;
+        hosts[3].ports++ <--> C <--> switchs[1].ports++;
+        hosts[4].ports++ <--> C <--> switchs[1].ports++;
+        hosts[5].ports++ <--> C <--> switchs[1].ports++;
+        hosts[6].ports++ <--> C <--> switchs[2].ports++;
+        hosts[7].ports++ <--> C <--> switchs[2].ports++;
+        hosts[8].ports++ <--> C <--> switchs[3].ports++;
+        hosts[9].ports++ <--> C <--> switchs[4].ports++;
+        
 
 }

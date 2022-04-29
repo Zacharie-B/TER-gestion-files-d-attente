@@ -13,15 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "Switching.h"
+#include "Hosting.h"
 
-Define_Module(Switching);
+Define_Module(Hosting);
 
-Switching::~Switching(){
+Hosting::~Hosting()
+{
+	// TODO Auto-generated destructor stub
 	cancelAndDelete(endTransmissionEvent);
 }
 
-void Switching::initialize()
+void Hosting::initialize()
 {
 	// get the pointer of the parameter and signals of own module
 	myAddress = getParentModule()->par("address");
@@ -42,7 +44,7 @@ void Switching::initialize()
 	std::vector<std::string> nedTypes;
 	nedTypes.push_back(getParentModule()->getNedTypeName());
 	nedTypes.push_back("src.device.Router");
-	nedTypes.push_back("src.device.Host");
+	nedTypes.push_back("src.device.Switch");
 	topo->extractByNedTypeName(nedTypes);
 	EV << "cTopology found " << topo->getNumNodes() << " nodes\n";
 
@@ -63,13 +65,13 @@ void Switching::initialize()
 			cGate *parentModuleGate = thisNode->getPath(0)->getLocalGate();
 			int gateIndex = parentModuleGate->getIndex();
 			int address = topo->getNode(i)->getModule()->par("address");
-			switchingTable[address] = gateIndex;
+			hostingTable[address] = gateIndex;
 			EV << "  towards address " << address << " gateIndex is " << gateIndex << endl;
 	}
 	delete topo;
 }
 
-void Switching::handleMessage(cMessage *msg)
+void Hosting::handleMessage(cMessage *msg)
 {
 	if (msg == endTransmissionEvent) {
 		// Transmission finished, we can start next one.
@@ -96,7 +98,7 @@ void Switching::handleMessage(cMessage *msg)
  *
  * @param *msg The message to transmit through the fifo.
  */
-void Switching::startTransmitting(cMessage *msg)
+void Hosting::startTransmitting(cMessage *msg)
 {
     EV << "Starting transmission of " << msg << endl;
     isBusy = true;
@@ -113,8 +115,8 @@ void Switching::startTransmitting(cMessage *msg)
 				return;
 		}
 
-		SwitchingTable::iterator it = switchingTable.find(destAddr);
-		if (it == switchingTable.end()) {
+		HostingTable::iterator it = hostingTable.find(destAddr);
+		if (it == hostingTable.end()) {
 				EV << "address " << destAddr << " unreachable, discarding packet " << pk->getName() << endl;
 				emit(dropSignal, (intval_t)pk->getByteLength());
 				delete pk;
@@ -133,4 +135,6 @@ void Switching::startTransmitting(cMessage *msg)
     simtime_t endTransmission = gate("interfaces$o", 0)->getTransmissionChannel()->getTransmissionFinishTime();
     scheduleAt(endTransmission, endTransmissionEvent);
 }
+
+
 

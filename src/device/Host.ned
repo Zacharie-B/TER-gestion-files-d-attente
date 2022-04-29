@@ -17,17 +17,17 @@ package src.device;
 
 import src.application.App;
 import src.application.IApp;
-import src.behaviorDevice.Switching;
+import src.behaviorDevice.Hosting;
 
 //
 // TODO documentation
 //
-module Switch
+module Host
 {
     parameters:
         int address;
         string appType;
-        @display("i=device/switch");
+        @display("i=device/pc2");
     gates:
         inout ports[];
     submodules:
@@ -36,17 +36,17 @@ module Switch
                 address = parent.address;
                 @display("p=140,40");
         }
-        switching: Switching {
+        hosting: Hosting {
             parameters:
                 @display("p=140,130");
             gates:
                 interfaces[sizeof(parent.ports)];
         }
     connections:
-        switching.localOut --> app.in;
-        switching.localIn <-- app.out;
-        for i=0..sizeof(ports)-1{
-            ports[i] <--> switching.interfaces[i];
+        hosting.localOut --> app.in;
+        hosting.localIn <-- app.out;
+		for i=0..sizeof(ports)-1{
+            ports[i] <--> hosting.interfaces[i];
         }
+        
 }
-

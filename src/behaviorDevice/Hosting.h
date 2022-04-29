@@ -13,41 +13,37 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef APPLICATION_APP_H_
-#define APPLICATION_APP_H_
+#ifndef BEHAVIORDEVICE_HOSTING_H_
+#define BEHAVIORDEVICE_HOSTING_H_
 
-#include <vector>
-#include <algorithm>
+#include <map>
 #include <omnetpp.h>
-#include "Packet_m.h"
+
+#include "C:\Users\zacha\omnetpp-6.0-windows-x86_64\samples\TER-gestion-files-d-attente\src\application\Packet_m.h"
 
 using namespace omnetpp;
 
-class App : public cSimpleModule
+class Hosting : public cSimpleModule
 {
 	private:
-    // configuration
-    int myAddress;
-    std::vector<int> destAddresses;
-    std::vector<int> srcAddresses;
-    cPar *sendIATime;
-    cPar *packetLengthBytes;
+		int myAddress;
 
-    // state
-    cMessage *generatePacket = nullptr;
-    long pkCounter;
+		typedef std::map<int, int> HostingTable;  // destaddr -> gateindex
+		HostingTable hostingTable;
 
-    // signals
-    simsignal_t endToEndDelaySignal;
-    simsignal_t hopCountSignal;
-    simsignal_t sourceAddressSignal;
+		cMessage *endTransmissionEvent = nullptr;
+		bool isBusy;
 
-  public:
-    virtual ~App();
+		simsignal_t sourceAddress;
+		simsignal_t dropSignal;
+		simsignal_t outputIfSignal;
 
-  protected:
-    virtual void initialize() override;
-    virtual void handleMessage(cMessage *msg) override;
+	public:
+		virtual ~Hosting();
+	protected:
+		virtual void initialize() override;
+		virtual void handleMessage(cMessage *msg) override;
+		virtual void startTransmitting(cMessage *msg);
 };
 
-#endif /* APPLICATION_APP_H_ */
+#endif /* BEHAVIORDEVICE_HOSTING_H_ */

@@ -72,12 +72,15 @@ void App::handleMessage(omnetpp::cMessage *msg)
         pk->setDestAddr(destAddress);
         send(pk, "out");
 
+      	std::cout << "App envoie msg : " << msg << endl;
+
         scheduleAt(simTime() + sendIATime->doubleValue(), generatePacket);
         if (hasGUI())
             getParentModule()->bubble("Generating packet...");
     }
     else if(msg == generatePacket){
     	// Dodge the issue which read packet whereas there is nothing to read.
+    	std::cout << "App ne fait rien" << endl;
     }
     else {
         // Handle incoming packet

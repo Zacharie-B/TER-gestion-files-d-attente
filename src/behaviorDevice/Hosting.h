@@ -16,7 +16,9 @@
 #ifndef BEHAVIORDEVICE_HOSTING_H_
 #define BEHAVIORDEVICE_HOSTING_H_
 
+#include <iostream>
 #include <map>
+#include <algorithm>
 #include <omnetpp.h>
 
 #include "C:\Users\zacha\omnetpp-6.0-windows-x86_64\samples\TER-gestion-files-d-attente\src\application\Packet_m.h"
@@ -28,15 +30,13 @@ class Hosting : public cSimpleModule
 	private:
 		int myAddress;
 
-		typedef std::map<int, int> HostingTable;  // destaddr -> gateindex
-		HostingTable hostingTable;
+		std::vector<int> destAddressesList;
 
 		cMessage *endTransmissionEvent = nullptr;
 		bool isBusy;
 
 		simsignal_t sourceAddress;
 		simsignal_t dropSignal;
-		simsignal_t outputIfSignal;
 
 	public:
 		virtual ~Hosting();
@@ -44,6 +44,7 @@ class Hosting : public cSimpleModule
 		virtual void initialize() override;
 		virtual void handleMessage(cMessage *msg) override;
 		virtual void startTransmitting(cMessage *msg);
+		virtual void refreshDisplay() const override;
 };
 
 #endif /* BEHAVIORDEVICE_HOSTING_H_ */

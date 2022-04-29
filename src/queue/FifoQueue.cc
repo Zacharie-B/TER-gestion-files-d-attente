@@ -80,6 +80,7 @@ void FifoQueue::startTransmitting(cMessage *msg)
  */
 void FifoQueue::handleMessage(cMessage *msg)
 {
+ std::cout << "Message queue : " << msg << endl;
     if (msg == endTransmissionEvent) {
         // Transmission finished, we can start next one.
         EV << "Transmission finished.\n";

@@ -16,6 +16,7 @@
 #ifndef QUEUE_FIFOQUEUE_H_
 #define QUEUE_FIFOQUEUE_H_
 
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <omnetpp.h>

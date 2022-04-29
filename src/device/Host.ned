@@ -29,7 +29,7 @@ module Host
         string appType;
         @display("i=device/pc2");
     gates:
-        inout ports[];
+        inout port;
     submodules:
         app: <appType> like IApp {
             parameters:
@@ -39,14 +39,10 @@ module Host
         hosting: Hosting {
             parameters:
                 @display("p=140,130");
-            gates:
-                interfaces[sizeof(parent.ports)];
         }
     connections:
         hosting.localOut --> app.in;
         hosting.localIn <-- app.out;
-		for i=0..sizeof(ports)-1{
-            ports[i] <--> hosting.interfaces[i];
-        }
+        port <--> hosting.interface;
         
 }

@@ -53,16 +53,16 @@ network Network5
         switchs[3].ports++ <--> C <--> routers[3].port++;
         switchs[4].ports++ <--> C <--> routers[2].port++;
         
-        hosts[0].ports++ <--> C <--> switchs[0].ports++;
-        hosts[1].ports++ <--> C <--> switchs[1].ports++;
-        hosts[2].ports++ <--> C <--> switchs[1].ports++;
-        hosts[3].ports++ <--> C <--> switchs[1].ports++;
-        hosts[4].ports++ <--> C <--> switchs[1].ports++;
-        hosts[5].ports++ <--> C <--> switchs[1].ports++;
-        hosts[6].ports++ <--> C <--> switchs[2].ports++;
-        hosts[7].ports++ <--> C <--> switchs[2].ports++;
-        hosts[8].ports++ <--> C <--> switchs[3].ports++;
-        hosts[9].ports++ <--> C <--> switchs[4].ports++;
+        hosts[0].port <--> C <--> switchs[0].ports++;
+        hosts[1].port <--> C <--> switchs[1].ports++;
+        hosts[2].port <--> C <--> switchs[1].ports++;
+        hosts[3].port <--> C <--> switchs[1].ports++;
+        hosts[4].port <--> C <--> switchs[1].ports++;
+        hosts[5].port <--> C <--> switchs[1].ports++;
+        hosts[6].port <--> C <--> switchs[2].ports++;
+        hosts[7].port <--> C <--> switchs[2].ports++;
+        hosts[8].port <--> C <--> switchs[3].ports++;
+        hosts[9].port <--> C <--> switchs[4].ports++;
         
 
 }

@@ -28,5 +28,5 @@ simple Hosting
     gates:
         input localIn;
         output localOut;
-        inout interfaces[];
+        inout interface;
 }

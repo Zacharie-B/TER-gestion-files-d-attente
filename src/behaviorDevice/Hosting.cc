@@ -31,7 +31,6 @@ void Hosting::initialize()
 
 	sourceAddress = registerSignal("sourceAddress");
 	dropSignal = registerSignal("drop");
-	outputIfSignal = registerSignal("outputIf");
 
 	//
 	// Brute force approach -- every node does topology discovery on its own,
@@ -62,79 +61,73 @@ void Hosting::initialize()
 					continue;  // not connected
 			}
 
-			cGate *parentModuleGate = thisNode->getPath(0)->getLocalGate();
-			int gateIndex = parentModuleGate->getIndex();
-			int address = topo->getNode(i)->getModule()->par("address");
-			hostingTable[address] = gateIndex;
-			EV << "  towards address " << address << " gateIndex is " << gateIndex << endl;
+			destAddressesList.push_back(topo->getNode(i)->getModule()->par("address"));
 	}
 	delete topo;
 }
 
 void Hosting::handleMessage(cMessage *msg)
 {
-	if (msg == endTransmissionEvent) {
-		// Transmission finished, we can start next one.
-		EV << "Transmission finished.\n";
+  std::cout << "Hosting recoit msg : " << msg << endl;
+
+  if(msg == endTransmissionEvent){
+  	EV << "Transmission finished.\n";
+  	isBusy = false;
+  	return;
+  }
+  else if(msg->arrivedOn("localIn")){
 		isBusy = false;
 		startTransmitting(msg);
-	}
-	// if a message arrived from out Switch, we send it to the App
-	else if(msg->arrivedOn("interfaces$i", 0)){
-		send(msg, "localOut");
-	}
-	else{
-		if (endTransmissionEvent->isScheduled()) {
-			msg->setTimestamp();
-		}
-		else{
-			startTransmitting(msg);
-		}
-	}
+		return;
+  }
+
+  Packet *pk = check_and_cast<Packet *>(msg);
+  int destAddr = pk->getDestAddr();
+  if(destAddr == myAddress && msg->arrivedOn("interface$i")){
+  	EV << "local delivery of packet " << pk->getName() << endl;
+		send(pk, "localOut");
+  }
 }
 
 /**
  * Begin of the message transmission through the interfaces gate.
  *
- * @param *msg The message to transmit through the fifo.
+ * @param *msg The message to transmit through the host.
  */
 void Hosting::startTransmitting(cMessage *msg)
 {
     EV << "Starting transmission of " << msg << endl;
+    std::cout << "Starting transmission of " << msg << endl;
     isBusy = true;
-
-    if(check_and_cast<cMessage *>(msg))	return;
 
     Packet *pk = check_and_cast<Packet *>(msg);
 		int destAddr = pk->getDestAddr();
+//    int destAddr = 13;
 
-		if (destAddr == myAddress) {
-				EV << "local delivery of packet " << pk->getName() << endl;
-				send(pk, "localOut");
-				emit(outputIfSignal, -1);  // -1: local
+		if (*std::find(destAddressesList.begin(), destAddressesList.end(), destAddr) == destAddr) {
+				EV << "forwarding packet " << pk->getName() << endl;
+				send(pk, "interface$o");
+				// Schedule an event for the time when last bit will leave the gate.
+				simtime_t endTransmission = gate("interface$o")->getTransmissionChannel()->getTransmissionFinishTime();
+				scheduleAt(endTransmission, endTransmissionEvent);
+
+				if (hasGUI())
+					getParentModule()->bubble("Sending packet...");
+
 				return;
-		}
+			}
 
-		HostingTable::iterator it = hostingTable.find(destAddr);
-		if (it == hostingTable.end()) {
-				EV << "address " << destAddr << " unreachable, discarding packet " << pk->getName() << endl;
-				emit(dropSignal, (intval_t)pk->getByteLength());
-				delete pk;
-				return;
-		}
+		EV << "address " << destAddr << " unreachable, discarding packet " << pk->getName() << endl;
+		emit(dropSignal, (intval_t)pk->getByteLength());
+		delete pk;
 
-		int outGateIndex = (*it).second;
-		EV << "forwarding packet " << pk->getName() << " on gate index " << outGateIndex << endl;
-		pk->setHopCount(pk->getHopCount()+1);
-		emit(outputIfSignal, outGateIndex);
-		isBusy = true;
-		// gives the exactly gate with '$o' to indicate the port in output mode.
-		send(pk, "interfaces$o", outGateIndex);
-
-    // Schedule an event for the time when last bit will leave the gate.
-    simtime_t endTransmission = gate("interfaces$o", 0)->getTransmissionChannel()->getTransmissionFinishTime();
-    scheduleAt(endTransmission, endTransmissionEvent);
 }
 
-
+/**
+ * Refresh display one the graphical simulation
+ */
+void Hosting::refreshDisplay() const
+{
+    getDisplayString().setTagArg("t", 0, isBusy ? "transmitting" : "inactive");
+}
 

@@ -24,7 +24,7 @@ network Network5
     types:
         channel C extends DatarateChannel
         {
-            delay = uniform(0.001s, 1s);
+            delay = uniform(0.0001s, 0.01s);
             datarate = 1Gbps;
         }
     submodules:
@@ -34,7 +34,7 @@ network Network5
         switchs[5]: Switch {
             address = index + 5;
         }
-        hosts[10]: Host {
+        hosts[20]: Host {
             address = index + 10;
         }
 
@@ -59,9 +59,19 @@ network Network5
         hosts[3].port <--> C <--> switchs[1].ports++;
         hosts[4].port <--> C <--> switchs[1].ports++;
         hosts[5].port <--> C <--> switchs[1].ports++;
-        hosts[6].port <--> C <--> switchs[2].ports++;
-        hosts[7].port <--> C <--> switchs[2].ports++;
-        hosts[8].port <--> C <--> switchs[3].ports++;
-        hosts[9].port <--> C <--> switchs[4].ports++;
+        hosts[6].port <--> C <--> switchs[1].ports++;
+        hosts[7].port <--> C <--> switchs[1].ports++;
+        hosts[8].port <--> C <--> switchs[1].ports++;
+        hosts[9].port <--> C <--> switchs[1].ports++;
+        hosts[10].port <--> C <--> switchs[1].ports++;
+        hosts[11].port <--> C <--> switchs[2].ports++;
+        hosts[12].port <--> C <--> switchs[2].ports++;
+        hosts[13].port <--> C <--> switchs[2].ports++;
+        hosts[14].port <--> C <--> switchs[2].ports++;
+        hosts[15].port <--> C <--> switchs[2].ports++;
+        hosts[16].port <--> C <--> switchs[2].ports++;
+        hosts[17].port <--> C <--> switchs[3].ports++;
+        hosts[18].port <--> C <--> switchs[4].ports++;
+        hosts[19].port <--> C <--> switchs[4].ports++;
         
 }

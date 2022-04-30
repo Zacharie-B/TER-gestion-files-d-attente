@@ -114,10 +114,11 @@ void FifoQueue::handleMessage(cMessage *msg)
                   getParentModule()->bubble("Queue Full, drop packet...");
             }
             else {
-                EV << "Received " << msg << " but transmitter busy: queueing up\n";
+                EV << "Received " << msg << " but transmitter busy: queuing up\n";
                 msg->setTimestamp();
                 queue.insert(msg);
                 emit(qlenSignal, queue.getLength());
+                std::cout << "Queuing packet " << msg << endl;
                 if(hasGUI())
                 	getParentModule()->bubble("Queuing packet...");
             }

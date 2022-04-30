@@ -68,7 +68,7 @@ void Hosting::initialize()
 
 void Hosting::handleMessage(cMessage *msg)
 {
-  std::cout << "Hosting recoit msg : " << msg << endl;
+//  std::cout << "Hosting recoit msg : " << msg << endl;
 
   if(msg == endTransmissionEvent){
   	EV << "Transmission finished.\n";
@@ -104,10 +104,10 @@ void Hosting::startTransmitting(cMessage *msg)
 
     Packet *pk = check_and_cast<Packet *>(msg);
 		int destAddr = pk->getDestAddr();
-//    int destAddr = 13;
 
 		if (*std::find(destAddressesList.begin(), destAddressesList.end(), destAddr) == destAddr) {
 				EV << "forwarding packet " << pk->getName() << endl;
+//				std::cout << "forwarding packet " << pk->getName() << endl;
 				send(pk, "interface$o");
 				// Schedule an event for the time when last bit will leave the gate.
 				simtime_t endTransmission = gate("interface$o")->getTransmissionChannel()->getTransmissionFinishTime();

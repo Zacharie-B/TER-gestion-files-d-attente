@@ -18,14 +18,14 @@ package src.queue;
 //
 // TODO documentation
 //
-simple FifoQueue
+simple FifoQueue like IQueue
 {
     parameters:
         int frameLength = default(1500); // max length of a frame
         int frameCapacity = default(3); // max number of packets; 0 means no limit
         bool useCutThroughSwitching = default(false);  // use cut-through switching instead of store-and-forward
         @display("i=block/queue;q=queue");
-        @signal[qlen](type="long");
+    	@signal[qlen](type="long");
         @signal[busy](type="bool");
         @signal[queueingTime](type="simtime_t");
         @signal[drop](type="long");
@@ -37,7 +37,6 @@ simple FifoQueue
         @statistic[drop](title="dropped packet byte length";unit=bytes;record=vector?,count,sum;interpolationmode=none);
         @statistic[txBytes](title="transmitting packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
         @statistic[rxBytes](title="received packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
-        
     gates:
         input in;
         output out;

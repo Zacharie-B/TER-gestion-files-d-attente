@@ -80,7 +80,7 @@ void FifoQueue::startTransmitting(cMessage *msg)
  */
 void FifoQueue::handleMessage(cMessage *msg)
 {
- std::cout << "Message queue : " << msg << endl;
+// std::cout << "Message queue : " << msg << endl;
     if (msg == endTransmissionEvent) {
         // Transmission finished, we can start next one.
         EV << "Transmission finished.\n";
@@ -118,7 +118,7 @@ void FifoQueue::handleMessage(cMessage *msg)
                 msg->setTimestamp();
                 queue.insert(msg);
                 emit(qlenSignal, queue.getLength());
-                std::cout << "Queuing packet " << msg << endl;
+//                std::cout << "Queuing packet " << msg << endl;
                 if(hasGUI())
                 	getParentModule()->bubble("Queuing packet...");
             }

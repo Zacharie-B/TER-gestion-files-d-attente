@@ -39,6 +39,7 @@ OBJS = \
     $O/behaviorDevice/Routing.o \
     $O/behaviorDevice/Switching.o \
     $O/queue/FifoQueue.o \
+    $O/queue/RandomQueue.o \
     $O/application/Packet_m.o
 
 # Message files

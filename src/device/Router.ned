@@ -11,7 +11,7 @@
 package src.device;
 
 import src.behaviorDevice.Routing;
-import src.queue.FifoQueue;
+import src.queue.IQueue;
 import src.application.IApp;
 import src.application.App;
 
@@ -24,6 +24,7 @@ module Router
     parameters:
         int address;
         string appType;
+        string queueType;
         @display("i=old/srouter,gold");
     gates:
         inout port[];
@@ -40,7 +41,7 @@ module Router
                 in[sizeof(parent.port)];
                 out[sizeof(parent.port)];
         }
-        queue[sizeof(port)]: FifoQueue {
+        queue[sizeof(port)]: <queueType> like IQueue {
             parameters:
                 @display("p=80,200,row");
         }

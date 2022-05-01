@@ -18,7 +18,7 @@ package src.device;
 import src.application.App;
 import src.application.IApp;
 import src.behaviorDevice.Switching;
-import src.queue.FifoQueue;
+import src.queue.IQueue;
 
 //
 // TODO documentation
@@ -28,6 +28,7 @@ module Switch
     parameters:
         int address;
         string appType;
+        string queueType;
         @display("i=device/switch");
     gates:
         inout ports[];
@@ -44,7 +45,7 @@ module Switch
                 in[sizeof(parent.ports)];
                 out[sizeof(parent.ports)];
         }
-        queue[sizeof(ports)]: FifoQueue {
+        queue[sizeof(ports)]: <queueType> like IQueue {
             parameters:
                 @display("p=80,200,row");
         }

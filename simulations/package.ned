@@ -40,12 +40,11 @@ network Network5
 
     connections:
         routers[1].port++ <--> C <--> routers[0].port++;
-        routers[0].port++ <--> C <--> routers[2].port++;
-        routers[4].port++ <--> C <--> routers[3].port++;
         routers[3].port++ <--> C <--> routers[1].port++;
+        routers[1].port++ <--> C <--> routers[4].port++;
+        routers[3].port++ <--> C <--> routers[0].port++;
         routers[3].port++ <--> C <--> routers[2].port++;
-        routers[2].port++ <--> C <--> routers[4].port++;
-        routers[1].port++ <--> C <--> routers[2].port++;
+        routers[4].port++ <--> C <--> routers[2].port++;
 
         switchs[0].ports++ <--> C <--> routers[0].port++;
         switchs[1].ports++ <--> C <--> routers[1].port++;

@@ -33,7 +33,7 @@ simple RandomQueue like IQueue
         @signal[rxBytes](type="long");
         @statistic[qlen](title="queue length";record=vector?,timeavg,max;interpolationmode=sample-hold);
         @statistic[busy](title="server busy state";record=vector?,timeavg;interpolationmode=sample-hold);
-        @statistic[queueingTime](title="queueing time at dequeue";unit=s;interpolationmode=none);
+        @statistic[queueingTime](title="queueing time at dequeue";unit=s;record=vector?,timeavg,max;interpolationmode=sample-hold);
         @statistic[drop](title="dropped packet byte length";unit=bytes;record=vector?,count,sum;interpolationmode=none);
         @statistic[txBytes](title="transmitting packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
         @statistic[rxBytes](title="received packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);

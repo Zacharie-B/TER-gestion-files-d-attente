@@ -45,7 +45,7 @@ void RandomQueue::initialize()
 	queueingTimeSignal = registerSignal("queueingTime");
 	dropSignal = registerSignal("drop");
 	txBytesSignal = registerSignal("txBytes");
-	rxBytesSignal = registerSignal("rxBytes");
+//	rxBytesSignal = registerSignal("rxBytes");
 
 	emit(qlenSignal, queue.getLength());
 	emit(busySignal, false);
@@ -89,7 +89,7 @@ void RandomQueue::handleMessage(cMessage *msg)
 	}
 	else if (msg->arrivedOn("link$i")) {
 			// pass up
-			emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
+//			emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
 			send(msg, "out");
 	}
 	else {  // arrived on gate "in"

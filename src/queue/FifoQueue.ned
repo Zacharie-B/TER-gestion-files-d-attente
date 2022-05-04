@@ -21,22 +21,26 @@ package src.queue;
 simple FifoQueue like IQueue
 {
     parameters:
-        int frameLength = default(1500); // max length of a frame
-        int frameCapacity = default(3); // max number of packets; 0 means no limit
+//        int frameLength = default(1500); // max length of a frame
+        int frameCapacity = default(40); // max number of packets; 0 means no limit
         bool useCutThroughSwitching = default(false);  // use cut-through switching instead of store-and-forward
+//        volatile double processDelay @unit(ms) = default(0.1ms);
         @display("i=block/queue;q=queue");
     	@signal[qlen](type="long");
         @signal[busy](type="bool");
         @signal[queueingTime](type="simtime_t");
         @signal[drop](type="long");
         @signal[txBytes](type="long");
-        @signal[rxBytes](type="long");
+//        @signal[rxBytes](type="long");
+//        @signal[processDelay](type="long");
         @statistic[qlen](title="queue length";record=vector?,timeavg,max;interpolationmode=sample-hold);
         @statistic[busy](title="server busy state";record=vector?,timeavg;interpolationmode=sample-hold);
         @statistic[queueingTime](title="queueing time at dequeue";unit=ms;record=vector?,timeavg,max;interpolationmode=sample-hold);
         @statistic[drop](title="dropped packet byte length";unit=bytes;record=vector?,count,sum;interpolationmode=none);
         @statistic[txBytes](title="transmitting packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
-        @statistic[rxBytes](title="received packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
+//        @statistic[rxBytes](title="received packet byte length";unit=bytes;record=vector?,count,sum,histogram;interpolationmode=none);
+//        @statistic[processDelay](title="process delay of routing";record=vector?,timeavg;interpolationmode=sample-hold);
+        
     gates:
         input in;
         output out;

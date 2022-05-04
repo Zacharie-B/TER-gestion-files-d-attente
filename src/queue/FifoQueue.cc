@@ -35,21 +35,23 @@ void FifoQueue::initialize()
     queue.setName("fifoQueue");
     endTransmissionEvent = new cMessage("endTransmissionEvent");
 
-   if (par("useCutThroughSwitching"))
-       gate("link$i")->setDeliverImmediately(true);
+		if (par("useCutThroughSwitching"))
+			 gate("link$i")->setDeliverImmediately(true);
 
-   frameCapacity = par("frameCapacity");
+		frameCapacity = par("frameCapacity");
+//		processDelay = &par("processDelay");
 
-   qlenSignal = registerSignal("qlen");
-   busySignal = registerSignal("busy");
-   queueingTimeSignal = registerSignal("queueingTime");
-   dropSignal = registerSignal("drop");
-   txBytesSignal = registerSignal("txBytes");
-   rxBytesSignal = registerSignal("rxBytes");
+		qlenSignal = registerSignal("qlen");
+		busySignal = registerSignal("busy");
+		queueingTimeSignal = registerSignal("queueingTime");
+		dropSignal = registerSignal("drop");
+		txBytesSignal = registerSignal("txBytes");
+		//   rxBytesSignal = registerSignal("rxBytes");
+//		processDelaySignal = registerSignal("processDelay");
 
-   emit(qlenSignal, queue.getLength());
-   emit(busySignal, false);
-   isBusy = false;
+		emit(qlenSignal, queue.getLength());
+		emit(busySignal, false);
+		isBusy = false;
 }
 
 /**
@@ -62,6 +64,7 @@ void FifoQueue::startTransmitting(cMessage *msg)
     EV << "Starting transmission of " << msg << endl;
     isBusy = true;
     int64_t numBytes = check_and_cast<cPacket *>(msg)->getByteLength();
+
     send(msg, "link$o");
 
     emit(txBytesSignal, numBytes);
@@ -69,7 +72,9 @@ void FifoQueue::startTransmitting(cMessage *msg)
 
     // Schedule an event for the time when last bit will leave the gate.
     simtime_t endTransmission = gate("link$o")->getTransmissionChannel()->getTransmissionFinishTime();
+//    endTransmission += processDelay->doubleValue();
     scheduleAt(endTransmission, endTransmissionEvent);
+//    emit(processDelaySignal, processDelay->doubleValue());s
 }
 
 /**
@@ -100,7 +105,7 @@ void FifoQueue::handleMessage(cMessage *msg)
     }
     else if (msg->arrivedOn("link$i")) {
         // pass up
-        emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
+//        emit(rxBytesSignal, (intval_t)check_and_cast<cPacket *>(msg)->getByteLength());
         send(msg, "out");
     }
     else {  // arrived on gate "in"

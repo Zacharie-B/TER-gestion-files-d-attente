@@ -36,7 +36,7 @@ private:
 	simsignal_t queueingTimeSignal;
 	simsignal_t dropSignal;
 	simsignal_t txBytesSignal;
-	simsignal_t rxBytesSignal;
+//	simsignal_t rxBytesSignal;
 
 public:
 	LifoQueue();

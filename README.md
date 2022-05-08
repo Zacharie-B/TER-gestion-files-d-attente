@@ -10,3 +10,4 @@ Ce projet a pour but de gérer les files d'attente dans les réseau, notamment d
 
 ## Guide des résultats 
 Les résultats des différentes simulations sont spécifiés dans le dossier simulations sous forme de fichiers avec l'extension anf.
+Les caractéristiques des files d'attente se trouvent dans les objets "queue", mais attention elles ne sont pas toutes utilisées.
